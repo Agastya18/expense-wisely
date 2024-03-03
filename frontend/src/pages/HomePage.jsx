@@ -6,11 +6,13 @@ import TransactionForm from "../components/TransactionForm";
 import axios from "axios";
 import { MdLogout } from "react-icons/md";
 import {useAuthStore} from '../zustand/authSlice'
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
-	const {authUser,setAuthUser,logout} = useAuthStore();
+	const {logout} = useAuthStore();
+	const navigate = useNavigate();
 	const chartData = {
 		labels: ["Saving", "Expense", "Investment"],
 		datasets: [
@@ -32,7 +34,8 @@ const HomePage = () => {
 		try {
 			await axios.get("/api/users/logout");
 			logout();
-			setAuthUser(null);
+			navigate('/login');
+			//setAuthUser(null);
 		} catch (error) {
 			console.log(error);
 		}

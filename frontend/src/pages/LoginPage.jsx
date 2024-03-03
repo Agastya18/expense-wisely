@@ -6,8 +6,8 @@ import { useAuthStore } from "../zustand/authSlice";
 import axios from "axios";
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { setAuthUser, authUser } = useAuthStore();
-  console.log("this is auth data", authUser);
+  const { setAuthUser,authUser } = useAuthStore();
+  //console.log("this is auth data", authUser);
 
   const [loginData, setLoginData] = useState({
     username: "",
@@ -24,17 +24,19 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginData);
+    //console.log(loginData);
     try {
       const { data } = await axios.post("/api/users/login", loginData);
      // console.log(data);
-      setAuthUser(data.user);
-      navigate("/");
+     localStorage.setItem('userInfo', JSON.stringify(data));
+      setAuthUser(data);
+     // console.log(authUser)
+     // navigate("/");
     } catch (error) {
       console.log(error);
     }
 
-    //localStorage.setItem('userInfo', JSON.stringify(loginData));
+    
   };
 
   return (

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const TransactionForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -12,7 +14,15 @@ const TransactionForm = () => {
 			location: formData.get("location"),
 			date: formData.get("date"),
 		};
-		console.log("transactionData", transactionData);
+		//console.log("transactionData", transactionData);
+		try {
+			const { data } = await axios.post("/api/transactions/create", transactionData);
+			console.log(data);
+		} catch (error) {
+			console.log(error);
+		}
+
+
 	};
 
 	return (
