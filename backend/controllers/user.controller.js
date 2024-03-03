@@ -1,7 +1,7 @@
 import User from "../models/user.Model.js";
 
 export const SignUp = async (req, res) => {
-    const { fullName, username, password,gender} = req.body
+    const {  name:fullName, username, password,gender} = req.body
     //console.log(req.body);
     if(!fullName || !username || !password || !gender ){
         return res.status(400).json({message: "All fields are required"})
