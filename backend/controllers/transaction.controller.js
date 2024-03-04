@@ -33,7 +33,9 @@ export const createTransaction = async (req, res) => {
 
 export const getTransaction = async (req, res) => {
     try {
-        const transactions = await Transaction.find({user: req.user._id});
+        const transactions = await Transaction.find({user: req.user._id}).populate("user",
+       " profilePic"
+        );
         if(!transactions){
             return res.status(400).json({message:"No transactions found"});
         }
@@ -63,7 +65,7 @@ export const deleteTransaction = async (req, res) => {
 
 export const updateTransaction = async (req, res) => {
     const {id} = req.params;
-    const {description,amount,paymentType,category,location} = req.body;
+    const {description,amount,paymentType,category,location,date} = req.body;
     
     try {
       const transaction = await Transaction.findById(req.params.id);
@@ -73,6 +75,7 @@ export const updateTransaction = async (req, res) => {
             transaction.paymentType = paymentType || transaction.paymentType;
             transaction.category = category || transaction.category;
             transaction.location = location || transaction.location;
+            transaction.date = date || transaction.date;
             const updatedTransaction = await transaction.save({validateBeforeSave:false});
             if(updatedTransaction){
                 return res.status(200).json({message:"Transaction updated successfully",updatedTransaction});
@@ -94,6 +97,30 @@ export const getTransactionById = async (req, res) => {
             return res.status(400).json({message:"Transaction not found"});
         }
         return res.status(200).json({transaction});
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const getTransactionByCategory = async (req, res) => {
+   // const {category} = req.params;
+    try {
+        const transactions = await Transaction.find({user: req.user._id})
+        if(!transactions){
+            return res.status(400).json({message:"No transactions found"});
+        }
+        const categoryMap = {};
+        transactions.forEach((transaction) => {
+            if(!categoryMap[transaction.category]){
+                categoryMap[transaction.category] = 0;
+            }
+            categoryMap[transaction.category] += transaction.amount;
+
+        })
+
+       // return res.status(200).json({categoryMap});
+       // return res.status(200).json({transactions});
+       const ret= Object.entries(categoryMap).map(([category,totalAmount]) => ({category,totalAmount}));
+       return res.status(200).json({categoryStatistics:ret});
     } catch (error) {
         console.log(error);
     }

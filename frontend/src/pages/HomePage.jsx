@@ -7,27 +7,78 @@ import axios from "axios";
 import { MdLogout } from "react-icons/md";
 import {useAuthStore} from '../zustand/authSlice'
 import { useNavigate } from "react-router-dom";
-
+import { useEffect,useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchTransactions,getTransactionByCategory } from "../api";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
+
+	const {  data } = useQuery(
+		{
+			queryKey: ["transactions"],
+			queryFn: fetchTransactions,
+		}
+	);
+	const { data: categoryData } = useQuery({
+		queryKey: ["categoryStatistics"],
+		queryFn: getTransactionByCategory,
+	});
+	console.log("cat",categoryData)
+	
+
 	const {logout} = useAuthStore();
 	const navigate = useNavigate();
-	const chartData = {
-		labels: ["Saving", "Expense", "Investment"],
+	const [chartData, setChartData] = useState( {
+		labels: [],
 		datasets: [
 			{
-				label: "%",
-				data: [13, 8, 3],
-				backgroundColor: ["rgba(75, 192, 192)", "rgba(255, 99, 132)", "rgba(54, 162, 235)"],
-				borderColor: ["rgba(75, 192, 192)", "rgba(255, 99, 132)", "rgba(54, 162, 235, 1)"],
+				label: "$",
+				data: [],
+				backgroundColor: [],
+				borderColor: [],
 				borderWidth: 1,
 				borderRadius: 30,
 				spacing: 10,
 				cutout: 130,
+
 			},
 		],
-	};
+	});
+	useEffect(() => {
+		if (categoryData?.data.categoryStatistics) {
+			const categories = categoryData?.data.categoryStatistics.map((stat) => stat.category);
+			const totalAmounts = categoryData?.data.categoryStatistics.map((stat) => stat.totalAmount);
+
+			const backgroundColors = [];
+			const borderColors = [];
+
+			categories.forEach((category) => {
+				if (category === "saving") {
+					backgroundColors.push("rgba(75, 192, 192)");
+					borderColors.push("rgba(75, 192, 192)");
+				} else if (category === "expense") {
+					backgroundColors.push("rgba(255, 99, 132)");
+					borderColors.push("rgba(255, 99, 132)");
+				} else if (category === "investment") {
+					backgroundColors.push("rgba(54, 162, 235)");
+					borderColors.push("rgba(54, 162, 235)");
+				}
+			});
+
+			setChartData((prev) => ({
+				labels: categories,
+				datasets: [
+					{
+						...prev.datasets[0],
+						data: totalAmounts,
+						backgroundColor: backgroundColors,
+						borderColor: borderColors,
+					},
+				],
+			}));
+		}
+	}, [categoryData]);
 
 	const handleLogout = async() => {
 		//console.log("Logging out...");

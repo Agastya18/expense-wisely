@@ -1,6 +1,11 @@
 import { useState } from "react";
-
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const TransactionPage = () => {
+	const { id } = useParams();
+	const navigate = useNavigate();
+
 	const [formData, setFormData] = useState({
 		description: "",
 		paymentType: "",
@@ -13,6 +18,14 @@ const TransactionPage = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log("formData", formData);
+		try {
+			const { data } = await axios.put(`/api/transactions/update/${id}`, formData);
+			console.log(data);
+			navigate("/");
+		} catch (error) {
+			console.log(error);
+		}
+
 	};
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -67,7 +80,7 @@ const TransactionPage = () => {
 								onChange={handleInputChange}
 								defaultValue={formData.paymentType}
 							>
-								<option value={"card"}>Card</option>
+								<option value={"online"}>Online</option>
 								<option value={"cash"}>Cash</option>
 							</select>
 							<div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
