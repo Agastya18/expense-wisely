@@ -60,8 +60,15 @@ export const login = async(req, res) =>{
         if(!authtoken){
             return res.status(400).json({message: "Invalid credentials3"})
         }
-        res.cookie("authtoken", authtoken, {httpOnly: true}, 
-        {maxAge: 15 * 24 * 60 * 60 * 1000,}
+        res.cookie("authtoken", authtoken, {httpOnly: true,
+               secure: true,
+                sameSite: "strict",
+                maxAge: 1000 * 60 * 60 * 24 * 15
+
+        
+
+        }, 
+        
         );
       
         const loggedInUser = {
