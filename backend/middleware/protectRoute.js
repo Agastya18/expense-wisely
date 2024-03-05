@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 export const verifyUser = async(req, res,next) => {
     try {
-    const token = req.cookies.authtoken || req.header("Authorization")?.replace("Bearer ", "")
+    const token = req.cookies.authtoken 
         //console.log(token)
          if (!token) {
              return res.status(401).json({ message: "You need to Login token" });
