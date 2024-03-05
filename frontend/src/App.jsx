@@ -13,7 +13,7 @@ function App() {
  
   
   const {authUser} = useAuthStore();
-  console.log("appjs",authUser)
+  //console.log("appjs",authUser)
 
   
  // const authUser = true;

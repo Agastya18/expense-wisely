@@ -47,7 +47,11 @@ userSchema.methods.matchPassword = async function(enteredPassword){
 }
 //genrating access token for user
 userSchema.methods.getAccessToken = function(){
-    return jwt.sign({id: this._id}, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRY})
+    return jwt.sign({id: this._id}, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRY,
+   
+    },
+    
+    )
 }
 
 // const User =  mongoose.model("User", userSchema);
