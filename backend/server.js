@@ -14,7 +14,7 @@ const PORT=process.env.PORT || 8000
 
 const __dirname = path.resolve();
 
-
+connectDB();
 
 //middlewares
 app.use(express.json());
@@ -46,6 +46,6 @@ app.get('*', (req, res) =>
 
 
 app.listen(PORT, () => {
-    connectDB();
+   
     console.log(`Serve running at:  http://localhost:${PORT}`);
 })
