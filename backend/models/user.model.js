@@ -50,5 +50,9 @@ userSchema.methods.getAccessToken = function(){
     return jwt.sign({id: this._id}, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRY})
 }
 
-const User = mongoose.model("User", userSchema);
+// const User =  mongoose.model("User", userSchema);
+// export default User;
+
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+
 export default User;
