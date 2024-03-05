@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 const TransactionPage = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -21,9 +22,12 @@ const TransactionPage = () => {
 		try {
 			const { data } = await axios.put(`/api/transactions/update/${id}`, formData);
 		//	console.log(data);
+		toast.success("Transaction Updated");
 			navigate("/");
+
 		} catch (error) {
 			console.log(error);
+			toast.error("Error updating transaction");
 		}
 
 	};

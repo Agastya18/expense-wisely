@@ -6,6 +6,7 @@ import { FaTrash } from "react-icons/fa";
 import { HiPencilAlt } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 const categoryColorMap = {
   saving: "from-green-700 to-green-400",
   expense: "from-pink-800 to-pink-600",
@@ -28,9 +29,12 @@ const Card = ({ transaction }) => {
         `/api/transactions/delete/${transaction._id}`
       );
     //  console.log(resp);
+    
       window.location.reload();
+      toast.success("Transaction Deleted");
     } catch (error) {
       console.log(error);
+      toast.error("Error deleting transaction");
     }
   };
 

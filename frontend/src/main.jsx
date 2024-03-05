@@ -10,6 +10,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from 'react-hot-toast'
 const queryClient = new QueryClient()
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -18,6 +19,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
  
   <QueryClientProvider client={queryClient}>
   <App />
+  <Toaster />
+
   <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </GridBackground>

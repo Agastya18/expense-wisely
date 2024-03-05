@@ -4,6 +4,7 @@ import RadioButton from "../components/RadioButton";
 import InputField from "../components/InputField";
 import {useAuthStore} from '../zustand/authSlice'
 import axios from 'axios'
+import toast from "react-hot-toast";
 const SignUpPage = () => {
 	const {setAuthUser,authUser} = useAuthStore();
 
@@ -39,8 +40,10 @@ const SignUpPage = () => {
 			//console.log(data);
 			
 			setAuthUser(data.user);
+			toast.success("Sign Up Successful");
 		} catch (error) {
 			console.log(error);
+			toast.error("Username already exists");
 		}
 		
 

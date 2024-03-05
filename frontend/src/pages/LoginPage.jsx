@@ -4,6 +4,7 @@ import InputField from "../components/InputField";
 import { useAuthStore } from "../zustand/authSlice";
 
 import axios from "axios";
+import toast from "react-hot-toast";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { setAuthUser,authUser } = useAuthStore();
@@ -30,10 +31,12 @@ const LoginPage = () => {
      // console.log(data);
      localStorage.setItem('userInfo', JSON.stringify(data));
       setAuthUser(data);
+      toast.success("Login Successful");
      // console.log(authUser)
      // navigate("/");
     } catch (error) {
       console.log(error);
+      toast.error("Invalid Credentials");
     }
 
     

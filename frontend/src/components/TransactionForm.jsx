@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useMutation,QueryClient,useQuery } from "@tanstack/react-query";
 import { postTransactions,fetchTransactions } from "../api";
+import toast from "react-hot-toast";
 const TransactionForm = () => {
 	const queryClient = new QueryClient()
   const {  refetch } = useQuery(
@@ -44,10 +45,12 @@ const TransactionForm = () => {
     //console.log("transactionData", transactionData);
     try {
       mutate(transactionData);
+      toast.success("Transaction Added");
 
       form.reset();
     } catch (error) {
       console.log(error);
+      toast.error("Error adding transaction");
     }
   };
 

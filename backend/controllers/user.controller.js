@@ -25,7 +25,10 @@ export const SignUp = async (req, res) => {
         if(newUser){
 
             const authtoken = await newUser.getAccessToken();
-            res.cookie("authtoken", authtoken, {httpOnly: true});
+            res.cookie("authtoken", authtoken, {httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                maxAge: 1000 * 60 * 60 * 24 * 15});
             return res.status(201).json({message: "User created successfully",
             user: {
                 _id: newUser._id,
