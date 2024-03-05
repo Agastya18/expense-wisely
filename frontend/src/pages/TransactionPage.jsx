@@ -17,10 +17,10 @@ const TransactionPage = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log("formData", formData);
+		//console.log("formData", formData);
 		try {
 			const { data } = await axios.put(`/api/transactions/update/${id}`, formData);
-			console.log(data);
+		//	console.log(data);
 			navigate("/");
 		} catch (error) {
 			console.log(error);

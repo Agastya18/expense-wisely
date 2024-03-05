@@ -1,17 +1,31 @@
 import axios from "axios";
-import { useMutation,QueryClient } from "@tanstack/react-query";
-import { postTransactions } from "../api";
+import { useMutation,QueryClient,useQuery } from "@tanstack/react-query";
+import { postTransactions,fetchTransactions } from "../api";
 const TransactionForm = () => {
 	const queryClient = new QueryClient()
-  const { mutate, isLoading } = useMutation({
+  const {  refetch } = useQuery(
+		{
+			queryKey: ["transactions"],
+			queryFn: fetchTransactions,
+		}
+	);
+  
+  const { mutate, isLoading, } = useMutation({
     mutationFn: postTransactions,
 	onSuccess:()=>{
 		queryClient.invalidateQueries({
 			queryKey: ["transactions"],
-			exact: true
+      
+      exact: true,
+      
+			
 		}) 
+    window.location.reload();
+   //refetch()
+    
 
 	}
+
   });
 
   const handleSubmit = async (e) => {

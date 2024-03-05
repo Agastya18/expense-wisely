@@ -10,21 +10,18 @@ import { useNavigate } from "react-router-dom";
 import { useEffect,useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTransactions,getTransactionByCategory } from "../api";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
+	const { authUser } = useAuthStore();
 
-	const {  data } = useQuery(
-		{
-			queryKey: ["transactions"],
-			queryFn: fetchTransactions,
-		}
-	);
+	
 	const { data: categoryData } = useQuery({
 		queryKey: ["categoryStatistics"],
 		queryFn: getTransactionByCategory,
 	});
-	console.log("cat",categoryData)
+	//console.log("cat",categoryData)
 	
 
 	const {logout} = useAuthStore();
@@ -44,6 +41,8 @@ const HomePage = () => {
 
 			},
 		],
+		
+		
 	});
 	useEffect(() => {
 		if (categoryData?.data.categoryStatistics) {
@@ -77,6 +76,7 @@ const HomePage = () => {
 					},
 				],
 			}));
+
 		}
 	}, [categoryData]);
 
@@ -102,7 +102,7 @@ const HomePage = () => {
 						Spend wisely, track wisely
 					</p>
 					<img
-						src={"https://tecdn.b-cdn.net/img/new/avatars/2.webp"}
+						src={authUser?.user.profilePic}
 						className='w-11 h-11 rounded-full border cursor-pointer'
 						alt='Avatar'
 					/>
@@ -111,9 +111,13 @@ const HomePage = () => {
 					{loading && <div className='w-6 h-6 border-t-2 border-b-2 mx-2 rounded-full animate-spin'></div>}
 				</div>
 				<div className='flex flex-wrap w-full justify-center items-center gap-6'>
-					<div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]  '>
-						<Doughnut data={chartData} />
-					</div>
+					
+					{categoryData?.data.categoryStatistics.length > 0 && (
+						<div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]  '>
+							<Doughnut data={chartData} />
+						</div>
+					)}
+
 
 					<TransactionForm />
 				</div>

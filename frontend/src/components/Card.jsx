@@ -21,13 +21,13 @@ const Card = ({ transaction }) => {
   description = description[0]?.toUpperCase() + description.slice(1);
   category = category[0]?.toUpperCase() + category.slice(1);
   paymentType = paymentType[0]?.toUpperCase() + paymentType.slice(1);
-  console.log("cardType", category);
+ // console.log("cardType", category);
   const handleDelete = async () => {
     try {
       const resp = await axios.delete(
         `/api/transactions/delete/${transaction._id}`
       );
-      console.log(resp);
+    //  console.log(resp);
       window.location.reload();
     } catch (error) {
       console.log(error);
